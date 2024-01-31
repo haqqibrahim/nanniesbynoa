@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Nannies by Noa | New York &amp; Tri-State Area Nanny Agency | Newborn Care</title>
+    <meta property="og:image" content="wp-content/uploads/2022/06/Nannies-by-Noa-Featured-Image.jpg" />
+
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    /> -->
+  </head>
+
+  <body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+      <!-- Company Logo -->
+      <img
+        src="wp-content\uploads\2022\02\NbN-Full-Logo-White-Variation.png"
+        alt="Company Logo"
+        class="mb-4 mx-auto"
+        style="max-width: 200px"
+      />
+
+      <h2 class="text-2xl font-bold mb-6 text-center">Registration Form</h2>
+
+      <form id="registrationForm" onsubmit="submitForm(event)">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label
+              for="firstName"
+              class="block text-sm font-medium text-gray-600"
+              >First Name</label
+            >
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="John"
+              class="mt-1 p-2 w-full border rounded-md"
+            />
+          </div>
+          <div>
+            <label
+              for="lastName"
+              class="block text-sm font-medium text-gray-600"
+              >Last Name</label
+            >
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Doe"
+              class="mt-1 p-2 w-full border rounded-md"
+            />
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label for="email" class="block text-sm font-medium text-gray-600"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="john.doe@example.com"
+            class="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        <div class="mt-4">
+          <label
+            for="phoneNumber"
+            class="block text-sm font-medium text-gray-600"
+            >Phone Number (USA)</label
+          >
+          <input
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            placeholder="123-456-7890"
+            class="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        <div class="mt-4">
+          <label for="ssn" class="block text-sm font-medium text-gray-600"
+            >Social Security Number</label
+          >
+          <input
+            type="text"
+            id="ssn"
+            name="ssn"
+            placeholder="XXX-XX-XXXX"
+            class="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="gender" class="block text-sm font-medium text-gray-600"
+              >Gender</label
+            >
+            <select
+              id="gender"
+              name="gender"
+              class="mt-1 p-2 w-full border rounded-md"
+            >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="dob" class="block text-sm font-medium text-gray-600"
+              >Date of Birth</label
+            >
+            <input
+              type="date"
+              id="dob"
+              name="dob"
+              class="mt-1 p-2 w-full border rounded-md"
+            />
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label
+            for="frontPicture"
+            class="block text-sm font-medium text-gray-600"
+            >Driver's License/State ID Front Picture</label
+          >
+          <div
+            class="relative border-dashed border-2 border-gray-500 p-4 rounded-md"
+          >
+            <input
+              type="file"
+              id="frontPicture"
+              name="frontPicture"
+              accept="image/*"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              onchange="updateFileName('frontPicture', this)"
+            />
+            <div class="text-center">
+              <p class="text-gray-500" id="frontPictureFileName">
+                Drag and drop your file here or
+              </p>
+              <p class="text-blue-500">Browse</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label
+            for="backPicture"
+            class="block text-sm font-medium text-gray-600"
+            >Driver's License/State ID Back Picture</label
+          >
+          <div
+            class="relative border-dashed border-2 border-gray-500 p-4 rounded-md"
+          >
+            <input
+              type="file"
+              id="backPicture"
+              name="backPicture"
+              accept="image/*"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              onchange="updateFileName('backPicture', this)"
+            />
+            <div class="text-center">
+              <p class="text-gray-500" id="backPictureFileName">
+                Drag and drop your file here or
+              </p>
+              <p class="text-blue-500">Browse</p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label for="acceptTerms" class="flex items-center">
+            <input
+              type="checkbox"
+              id="acceptTerms"
+              name="acceptTerms"
+              class="form-checkbox"
+            />
+            <span class="ml-2 text-sm">I accept the terms and conditions</span>
+          </label>
+        </div>
+        <div class="mt-6 text-center">
+          <button
+            type="submit"
+            class="bg-[#65a30d] text-white px-4 py-2 rounded-md w-full hover:bg-d8deaa"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function updateFileName(inputId, inputElement) {
+        const fileNameElement = document.getElementById(`${inputId}FileName`);
+        const fileName = inputElement.files[0].name;
+        fileNameElement.textContent = fileName;
+      }
+      function submitForm(event) {
+        event.preventDefault();
+        // Disable the button
+        
+
+        // Fetch form values
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const email = document.getElementById("email").value;
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        const ssn = document.getElementById("ssn").value;
+        const gender = document.getElementById("gender").value;
+        const dob = document.getElementById("dob").value;
+        const frontPicture = document.getElementById("frontPicture").value;
+        const backPicture = document.getElementById("backPicture").value;
+        const acceptTerms = document.getElementById("acceptTerms").checked;
+
+        // Display form data in console
+        console.log("First Name:", firstName);
+        console.log("Last Name:", lastName);
+        console.log("Email:", email);
+        console.log("Phone Number (USA):", phoneNumber);
+        console.log("Social Security Number:", ssn);
+        console.log("Gender:", gender);
+        console.log("Date of Birth:", dob);
+        console.log("Front Picture:", frontPicture);
+        console.log("Back Picture:", backPicture);
+        console.log("Accept Terms and Conditions:", acceptTerms);
+        setTimeout(() => {
+            window.location.href = "https://www.google.com";
+          }, 2000);
+      }
+    </script>
+  </body>
+</html>
